@@ -1,16 +1,17 @@
+require("dotenv").config();
 const express = require("express");
 const { Pool } = require("pg");
 const cors = require("cors");
-
+const PORT = process.env.PORT || 3000;
 const app = express();
 app.use(cors());
 app.use(express.json());
 
 // DB connection
 const pool = new Pool({
-  user: "admin",
-  host: "db", // Docker service name
-  database: "mydb",
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST, 
+  database: process.env.DB_NAME,
   password: process.env.DB_PASSWORD,
   port: 5432
 });
@@ -66,6 +67,6 @@ app.get("/users", async (req, res) => {
   res.json(result.rows);
 });
 
-app.listen(3000, () => {
+app.listen(PORT, () => {
   console.log(" Backend running on port 3000");
 });
